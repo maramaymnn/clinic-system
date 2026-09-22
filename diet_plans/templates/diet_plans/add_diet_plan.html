@@ -1,0 +1,56 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+<title>Add Nutrition Plan</title>
+
+<link
+    rel="stylesheet"
+    href="{% static 'dashboard/dashboard.css' %}"
+>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+{% include 'dashboard/includes/sidebar.html' %}
+
+<main class="main">
+
+    <h1>Add Nutrition Plan</h1>
+
+    <p>Client: <strong>{{ patient.name }}</strong></p>
+
+    <div class="card">
+
+        <form method="POST" enctype="multipart/form-data">
+
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <p>
+                <label>Meal Photos (grams &amp; substitutes)</label>
+                <input type="file" name="meal_images" multiple accept="image/*">
+            </p>
+
+            <button type="submit">Add Nutrition Plan</button>
+
+        </form>
+
+    </div>
+
+    <br>
+
+    <a href="/patients/{{ patient.id }}/" class="view-button">← Back to Client</a>
+
+</main>
+
+</div>
+
+</body>
+</html>

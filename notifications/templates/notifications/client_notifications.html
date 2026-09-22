@@ -1,0 +1,76 @@
+{% extends 'clinic_users/client_base.html' %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block content %}
+
+<div class="client-page-header">
+
+    <p class="client-eyebrow">
+        Updates
+    </p>
+
+    <h1>
+        Notifications
+    </h1>
+
+    <p>
+        Important updates about your membership and clinic.
+    </p>
+
+</div>
+
+
+<div class="client-dashboard-grid">
+
+    <div class="client-card client-card-wide">
+
+        <div class="client-card-header">
+            <span>Notifications</span>
+        </div>
+
+
+        {% if notifications %}
+
+            {% for notification in notifications %}
+
+                <div class="client-notification">
+
+                    <strong>
+                        {{ notification.title }}
+                    </strong>
+
+                    <p>
+                        {{ notification.message }}
+                    </p>
+
+                    <small>
+                        {{ notification.created_at }}
+                    </small>
+
+                    <br>
+
+                    <a
+                        href="{% url 'mark_notification_read' notification.id %}"
+                        class="client-button"
+                    >
+                        Mark as Read
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p class="client-empty">
+                No unread notifications.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

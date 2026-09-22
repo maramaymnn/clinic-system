@@ -1,0 +1,85 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+
+<title>Notifications</title>
+
+<link
+    rel="stylesheet"
+    href="{% static 'dashboard/dashboard.css' %}"
+>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+
+{% include 'dashboard/includes/sidebar.html' %}
+
+
+<main class="main">
+
+    <h1>Notifications</h1>
+
+
+    {% if notifications %}
+
+        {% for notification in notifications %}
+
+            <div class="card">
+
+                <h2>
+                    {{ notification.title }}
+                </h2>
+
+
+                <p>
+                    {{ notification.message }}
+                </p>
+
+
+                <small>
+                    {{ notification.created_at }}
+                </small>
+                <a
+                        href="{% url 'mark_notification_read' notification.id %}"
+                        class="view-button"
+
+                        >
+
+
+                    Mark as Read
+
+
+             </a>
+
+
+            </div>
+
+        {% endfor %}
+
+
+    {% else %}
+
+        <div class="card">
+
+            <p>
+                No unread notifications.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</main>
+
+</div>
+
+</body>
+</html>

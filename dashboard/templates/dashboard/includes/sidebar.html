@@ -1,0 +1,129 @@
+<aside class="sidebar">
+
+<div class="logo">
+    Clinic System
+</div>
+
+
+<!-- Dashboard -->
+
+<a
+    href="/"
+    class="nav-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+>
+    Dashboard
+</a>
+
+
+<!-- Clients (Patient model) -->
+
+<a
+    href="/patients/"
+    class="nav-item {% if request.resolver_match.url_name == 'patients' or request.resolver_match.url_name == 'patient_detail' or request.resolver_match.url_name == 'create_patient' or request.resolver_match.url_name == 'create_assessment' %}active{% endif %}"
+>
+    Clients
+</a>
+
+
+<!-- Memberships (Subscription model) -->
+{% if request.user.role == 'admin' or request.user.role == 'receptionist' %}
+<a
+    href="{% url 'subscriptions' %}"
+    class="nav-item {% if request.resolver_match.url_name == 'subscriptions' or request.resolver_match.url_name == 'create_subscription' %}active{% endif %}"
+>
+    Memberships
+</a>
+{% endif %}
+
+
+
+<!-- Nutrition Plans (DietPlan model) -->
+
+{% if request.user.role == 'admin' or request.user.role == 'diet_doctor' %}
+
+    <a
+        href="#"
+        class="nav-item {% if request.resolver_match.url_name == 'create_diet_plan' %}active{% endif %}"
+    >
+        Nutrition Plans
+    </a>
+
+{% endif %}
+
+
+<!-- Workout Plans (ExercisePlan model) -->
+
+{% if request.user.role == 'admin' or request.user.role == 'exercise_coach' %}
+
+    <a
+        href="#"
+        class="nav-item {% if request.resolver_match.url_name == 'create_exercise_plan' %}active{% endif %}"
+    >
+        Workout Plans
+    </a>
+
+{% endif %}
+
+
+<!-- Daily Check-ins (FollowUp model) -->
+
+{% if request.user.role == 'admin' or request.user.role == 'follow_up' %}
+
+    <a
+        href="/follow-ups/"
+        class="nav-item {% if request.resolver_match.url_name == 'follow_ups' or request.resolver_match.url_name == 'create_follow_up' %}active{% endif %}"
+    >
+        Daily Check-ins
+    </a>
+
+{% endif %}
+
+
+<!-- Body Analysis (Progress model) -->
+
+{% if request.user.role == 'admin' or request.user.role == 'diet_doctor' %}
+
+    <a
+        href="/progress/"
+        class="nav-item {% if request.resolver_match.url_name == 'progress' or request.resolver_match.url_name == 'create_progress' %}active{% endif %}"
+    >
+        Body Analysis
+    </a>
+
+{% endif %}
+
+
+<!-- Bookings (Appointment model) -->
+
+{% if request.user.role == 'admin' or request.user.role == 'receptionist' or request.user.role == 'exercise_coach' %}
+
+    <a
+        href="/appointments/"
+        class="nav-item {% if request.resolver_match.url_name == 'appointments' or request.resolver_match.url_name == 'create_appointment' %}active{% endif %}"
+    >
+        Bookings
+    </a>
+
+{% endif %}
+
+
+<!-- Notifications -->
+
+<a
+    href="/notifications/"
+    class="nav-item {% if request.resolver_match.url_name == 'notifications' %}active{% endif %}"
+>
+    Notifications
+</a>
+
+
+<!-- Logout -->
+
+<a
+    href="/logout/"
+    class="nav-item"
+>
+    Logout
+</a>
+
+</aside>

@@ -1,0 +1,169 @@
+{% extends 'clinic_users/client_base.html' %}
+
+{% block title %}
+    Nutrition Plan
+{% endblock %}
+
+
+{% block content %}
+
+<div class="client-page-header">
+
+    <p class="client-eyebrow">
+        Nutrition
+    </p>
+
+    <h1>
+        My Nutrition Plan
+    </h1>
+
+    <p>
+        Your current and previous nutrition plans.
+    </p>
+
+</div>
+
+
+<div class="client-list">
+
+    {% for plan in diet_plans %}
+
+        <div class="client-card">
+
+            <div class="client-card-header">
+
+                <div>
+
+                    <h2>
+                        {{ plan.title }}
+                    </h2>
+
+                    <p class="client-muted">
+                        Version {{ plan.version }}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="client-info-row">
+
+                <span>
+                    Start
+                </span>
+
+                <strong>
+                    {{ plan.start_date }}
+                </strong>
+
+            </div>
+
+
+            <div class="client-info-row">
+
+                <span>
+                    End
+                </span>
+
+                <strong>
+                    {{ plan.end_date|default:"Ongoing" }}
+                </strong>
+
+            </div>
+
+
+            {% if plan.calories %}
+
+                <div class="client-info-row">
+
+                    <span>
+                        Calories
+                    </span>
+
+                    <strong>
+                        {{ plan.calories }} kcal
+                    </strong>
+
+                </div>
+
+            {% endif %}
+
+
+            {% if plan.notes %}
+
+                <div class="client-note">
+                    {{ plan.notes }}
+                </div>
+
+            {% endif %}
+
+
+            {% if plan.pdf_file %}
+
+                <a
+                    href="{{ plan.pdf_file.url }}"
+                    target="_blank"
+                    class="client-button"
+                >
+                    View Nutrition PDF
+                </a>
+
+            {% endif %}
+
+
+            {% if plan.meal_images.all %}
+
+                <div class="client-meals">
+
+                    {% for meal in plan.meal_images.all %}
+
+                        <div class="client-meal">
+
+                            <img
+                                src="{{ meal.image.url }}"
+                                alt="Meal"
+                            >
+
+                            {% if meal.grams %}
+
+                                <strong>
+                                    {{ meal.grams }} g
+                                </strong>
+
+                            {% endif %}
+
+
+                            {% if meal.substitutes %}
+
+                                <p>
+                                    {{ meal.substitutes }}
+                                </p>
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    {% empty %}
+
+        <div class="client-card">
+
+            <p class="client-empty">
+                No nutrition plans found.
+            </p>
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

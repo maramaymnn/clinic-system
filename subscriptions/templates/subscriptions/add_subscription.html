@@ -1,0 +1,69 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+
+<title>Add Subscription</title>
+
+<link
+    rel="stylesheet"
+    href="{% static 'dashboard/dashboard.css' %}"
+>
+
+
+</head>
+
+<body>
+
+<div class="layout">
+
+{% include 'dashboard/includes/sidebar.html' %}
+
+
+<main class="main">
+
+    <h1>Add Subscription</h1>
+
+
+    <p>
+        Patient:
+        <strong>{{ patient.name }}</strong>
+    </p>
+
+
+    <div class="card">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit">
+                Add Subscription
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <br>
+
+
+    <a
+        href="/patients/{{ patient.id }}/"
+        class="view-button"
+    >
+        ← Back to Patient
+    </a>
+
+</main>
+
+</div>
+
+</body>
+</html>

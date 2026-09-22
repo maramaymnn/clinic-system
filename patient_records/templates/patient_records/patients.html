@@ -1,0 +1,121 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+<title>Clients</title>
+
+<link
+    rel="stylesheet"
+    href="{% static 'dashboard/dashboard.css' %}"
+>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+
+{% include 'dashboard/includes/sidebar.html' %}
+
+<main class="main">
+
+    <div class="page-header">
+
+        <div>
+            <span class="eyebrow">CLIENTS</span>
+            <h1>Clients</h1>
+            <p>Manage and review your clinic clients.</p>
+        </div>
+
+        {% if request.user.role == 'admin' or request.user.role == 'receptionist' %}
+
+            <a
+                href="/patients/add/"
+                class="add-button"
+            >
+                + Add Client
+            </a>
+
+        {% endif %}
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="section-header">
+
+            <div>
+                <span class="eyebrow">DIRECTORY</span>
+                <h2>All Clients</h2>
+            </div>
+
+            <span class="record-count">
+                {{ patients|length }} clients
+            </span>
+
+        </div>
+
+
+        <div class="patients-list">
+
+            {% for patient in patients %}
+
+                <div class="patient-row">
+
+                    <div class="patient-main">
+
+                        <strong>
+                            {{ patient.name }}
+                        </strong>
+
+                        <span>
+                            {{ patient.phone }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="patient-status">
+
+                        <span class="status-pill {{ patient.status }}">
+                            {{ patient.get_status_display }}
+                        </span>
+
+                    </div>
+
+
+                    <a
+                        href="/patients/{{ patient.id }}/"
+                        class="view-button"
+                    >
+                        View Details →
+                    </a>
+
+                </div>
+
+
+            {% empty %}
+
+                <div class="empty-state">
+                    No clients found.
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</main>
+
+
+</div>
+
+</body>
+
+</html>

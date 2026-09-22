@@ -1,0 +1,70 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+<title>Daily Check-ins</title>
+
+<link
+    rel="stylesheet"
+    href="{% static 'dashboard/dashboard.css' %}"
+>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+{% include 'dashboard/includes/sidebar.html' %}
+
+<main class="main">
+
+    <h1>Daily Check-ins</h1>
+
+    <p>Daily nutrition check-in records</p>
+
+    {% if follow_ups %}
+
+        {% for follow_up in follow_ups %}
+
+            <div class="card">
+
+                <h2>{{ follow_up.patient.name }}</h2>
+
+                <p><strong>Date:</strong> {{ follow_up.date }}</p>
+                <p><strong>Status:</strong> {{ follow_up.get_status_display }}</p>
+
+                {% if follow_up.meals %}
+                    <p><strong>Meals:</strong> {{ follow_up.meals }}</p>
+                {% endif %}
+
+                {% if follow_up.replacement_request %}
+                    <p><strong>Replacement Request:</strong> {{ follow_up.replacement_request }}</p>
+                {% endif %}
+
+                {% if follow_up.notes %}
+                    <p><strong>Notes:</strong> {{ follow_up.notes }}</p>
+                {% endif %}
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="card">
+            <h2>No Check-ins</h2>
+            <p>There are no check-in records yet.</p>
+        </div>
+
+    {% endif %}
+
+</main>
+
+</div>
+
+</body>
+</html>

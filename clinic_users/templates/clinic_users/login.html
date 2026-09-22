@@ -1,0 +1,53 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+<title>Clinic Login</title>
+
+<link
+    rel="stylesheet"
+    href="{% static 'dashboard/dashboard.css' %}"
+>
+
+</head>
+
+<body>
+
+<div class="login-page">
+
+    <div class="login-card">
+
+        <h1>Clinic System</h1>
+        <h2>Sign in to your account</h2>
+
+        {% if error %}
+            <p>{{ error }}</p>
+        {% endif %}
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <p>
+                <label>Username</label>
+                <input type="text" name="username" required>
+            </p>
+
+            <p>
+                <label>Password</label>
+                <input type="password" name="password" required>
+            </p>
+
+            <button type="submit">Login</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+{% extends 'clinic_users/client_base.html' %}
+
+{% block title %}
+    My Membership
+{% endblock %}
+
+
+{% block content %}
+
+<div class="client-page-header">
+
+    <p class="client-eyebrow">
+        Membership
+    </p>
+
+    <h1>
+        My Membership
+    </h1>
+
+    <p>
+        Your current and previous memberships.
+    </p>
+
+</div>
+
+
+<div class="client-list">
+
+    {% for subscription in subscriptions %}
+
+        <div class="client-card">
+
+            <div class="client-card-header">
+
+                <span>
+                    Membership
+                </span>
+
+                <div class="client-status">
+                    {{ subscription.get_status_display }}
+                </div>
+
+            </div>
+
+
+            <div class="client-info-row">
+
+                <span>
+                    Start Date
+                </span>
+
+                <strong>
+                    {{ subscription.start_date }}
+                </strong>
+
+            </div>
+
+
+            <div class="client-info-row">
+
+                <span>
+                    End Date
+                </span>
+
+                <strong>
+                    {{ subscription.end_date }}
+                </strong>
+
+            </div>
+
+
+            {% if subscription.notes %}
+
+                <div class="client-note">
+
+                    {{ subscription.notes }}
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    {% empty %}
+
+        <div class="client-card">
+
+            <p class="client-empty">
+                No membership records found.
+            </p>
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

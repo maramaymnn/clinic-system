@@ -1,0 +1,117 @@
+{% extends 'clinic_users/client_base.html' %}
+
+{% block title %}
+    Workout Plan
+{% endblock %}
+
+
+{% block content %}
+
+<div class="client-page-header">
+
+    <p class="client-eyebrow">
+        Training
+    </p>
+
+    <h1>
+        My Workout Plan
+    </h1>
+
+    <p>
+        Your current and previous workout plans.
+    </p>
+
+</div>
+
+
+<div class="client-list">
+
+    {% for plan in exercise_plans %}
+
+        <div class="client-card">
+
+            <div class="client-card-header">
+
+                <div>
+
+                    <h2>
+                        {{ plan.title }}
+                    </h2>
+
+                    <p class="client-muted">
+                        Version {{ plan.version }}
+                    </p>
+
+                </div>
+
+                <div class="client-status">
+                    {{ plan.get_plan_type_display }}
+                </div>
+
+            </div>
+
+
+            <div class="client-info-row">
+
+                <span>
+                    Start
+                </span>
+
+                <strong>
+                    {{ plan.start_date }}
+                </strong>
+
+            </div>
+
+
+            <div class="client-info-row">
+
+                <span>
+                    End
+                </span>
+
+                <strong>
+                    {{ plan.end_date }}
+                </strong>
+
+            </div>
+
+
+            {% if plan.notes %}
+
+                <div class="client-note">
+                    {{ plan.notes }}
+                </div>
+
+            {% endif %}
+
+
+            {% if plan.pdf_file %}
+
+                <a
+                    href="{{ plan.pdf_file.url }}"
+                    target="_blank"
+                    class="client-button"
+                >
+                    View Workout PDF
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    {% empty %}
+
+        <div class="client-card">
+
+            <p class="client-empty">
+                No workout plans found.
+            </p>
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,79 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>Memberships</title>
+
+<link
+    rel="stylesheet"
+    href="{% static 'dashboard/dashboard.css' %}"
+>
+
+
+</head>
+
+<body>
+
+<div class="layout">
+
+    {% include 'dashboard/includes/sidebar.html' %}
+
+    <main class="main-content">
+
+        <div class="page-header">
+            <p>MEMBERSHIPS</p>
+            <h1>Memberships</h1>
+        </div>
+
+        <section class="content-section">
+
+            {% if subscriptions %}
+
+                {% for subscription in subscriptions %}
+
+                    <div class="subscription-card">
+
+                        <div>
+                            <h3>{{ subscription.patient.name }}</h3>
+
+                            <p>
+                                {{ subscription.start_date }}
+                                →
+                                {{ subscription.end_date }}
+                            </p>
+
+                            {% if subscription.notes %}
+                                <p>{{ subscription.notes }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <span class="status {{ subscription.status }}">
+                                {{ subscription.get_status_display }}
+                            </span>
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p>No memberships found.</p>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

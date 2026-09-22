@@ -1,0 +1,109 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+<title>Clinic Dashboard</title>
+
+<link
+    rel="stylesheet"
+    href="{% static 'dashboard/dashboard.css' %}"
+>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+{% include 'dashboard/includes/sidebar.html' %}
+
+<main class="main">
+
+    <h1>Dashboard</h1>
+
+    <p>Welcome, <strong>{{ request.user.username }}</strong></p>
+    <p>Role: <strong>{{ request.user.get_role_display }}</strong></p>
+
+    <div class="cards">
+
+        <!-- Active Clients -->
+
+        <div class="card">
+            <h2>Active Clients</h2>
+            <div class="number">{{ active_patients }}</div>
+        </div>
+
+
+        <!-- Receptionist / Admin -->
+
+        {% if request.user.role == 'receptionist' or request.user.role == 'admin' %}
+
+            <div class="card">
+                <h2>Bookings Today</h2>
+                <div class="number">{{ appointments_today }}</div>
+            </div>
+
+            <div class="card">
+                <h2>Expiring Memberships</h2>
+                <div class="number">{{ expiring_subscriptions }}</div>
+            </div>
+
+        {% endif %}
+
+
+        <!-- Nutrition Specialist / Admin -->
+
+        {% if request.user.role == 'diet_doctor' or request.user.role == 'admin' %}
+
+            <div class="card">
+                <h2>Nutrition Plans</h2>
+                <div class="number">{{ diet_plans_count }}</div>
+            </div>
+
+            <div class="card">
+                <h2>Body Analysis Records</h2>
+                <div class="number">{{ progress_count }}</div>
+            </div>
+
+        {% endif %}
+
+
+        <!-- Fitness Coach / Admin -->
+
+        {% if request.user.role == 'exercise_coach' or request.user.role == 'admin' %}
+
+            <div class="card">
+                <h2>Workout Plans</h2>
+                <div class="number">{{ exercise_plans_count }}</div>
+            </div>
+
+            <div class="card">
+                <h2>Bookings Today</h2>
+                <div class="number">{{ appointments_today }}</div>
+            </div>
+
+        {% endif %}
+
+
+        <!-- Follow-up Doctor / Admin -->
+
+        {% if request.user.role == 'follow_up' or request.user.role == 'admin' %}
+
+            <div class="card">
+                <h2>Check-ins Today</h2>
+                <div class="number">{{ follow_ups_today }}</div>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</main>
+
+</div>
+
+</body>
+</html>

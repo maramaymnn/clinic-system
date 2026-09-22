@@ -1,0 +1,110 @@
+{% extends 'clinic_users/client_base.html' %}
+
+{% block title %}
+    My Profile
+{% endblock %}
+
+
+{% block content %}
+
+<div class="client-page-header">
+
+    <p class="client-eyebrow">
+        Personal Information
+    </p>
+
+    <h1>
+        My Profile
+    </h1>
+
+    <p>
+        Your personal information registered with the clinic.
+    </p>
+
+</div>
+
+
+<div class="client-card">
+
+    {% if patient %}
+
+        <div class="client-profile-grid">
+
+            <div>
+                <span class="client-label">
+                    Full Name
+                </span>
+
+                <strong>
+                    {{ patient.name }}
+                </strong>
+            </div>
+
+
+            <div>
+                <span class="client-label">
+                    Phone
+                </span>
+
+                <strong>
+                    {{ patient.phone }}
+                </strong>
+            </div>
+
+
+            <div>
+                <span class="client-label">
+                    Email
+                </span>
+
+                <strong>
+                    {{ patient.email|default:"Not provided" }}
+                </strong>
+            </div>
+
+
+            <div>
+                <span class="client-label">
+                    Gender
+                </span>
+
+                <strong>
+                    {{ patient.get_gender_display }}
+                </strong>
+            </div>
+
+
+            <div>
+                <span class="client-label">
+                    Date of Birth
+                </span>
+
+                <strong>
+                    {{ patient.date_of_birth|default:"Not provided" }}
+                </strong>
+            </div>
+
+
+            <div>
+                <span class="client-label">
+                    Account Type
+                </span>
+
+                <strong>
+                    Online Client
+                </strong>
+            </div>
+
+        </div>
+
+    {% else %}
+
+        <p class="client-empty">
+            Your profile is not linked yet.
+        </p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+<title>Add Body Analysis</title>
+
+<link
+    rel="stylesheet"
+    href="{% static 'dashboard/dashboard.css' %}"
+>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+{% include 'dashboard/includes/sidebar.html' %}
+
+<main class="main">
+
+    <h1>Add Body Analysis</h1>
+
+    <p>Client: <strong>{{ patient.name }}</strong></p>
+
+    <div class="card">
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Add Body Analysis</button>
+        </form>
+
+    </div>
+
+    <br>
+
+    <a href="/patients/{{ patient.id }}/" class="view-button">← Back to Client</a>
+
+</main>
+
+</div>
+
+</body>
+</html>

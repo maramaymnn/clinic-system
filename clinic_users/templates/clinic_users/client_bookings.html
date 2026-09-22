@@ -1,0 +1,110 @@
+{% extends 'clinic_users/client_base.html' %}
+
+{% block title %}
+    My Bookings
+{% endblock %}
+
+
+{% block content %}
+
+<div class="client-page-header">
+
+    <p class="client-eyebrow">
+        Appointments
+    </p>
+
+    <h1>
+        My Bookings
+    </h1>
+
+    <p>
+        Your appointments and scheduled visits.
+    </p>
+
+</div>
+
+
+<div class="client-list">
+
+    {% for appointment in appointments %}
+
+        <div class="client-card">
+
+            <div class="client-card-header">
+
+                <div>
+
+                    <p class="client-eyebrow">
+                        Appointment
+                    </p>
+
+                    <h2>
+                        {{ appointment.date }}
+                    </h2>
+
+                </div>
+
+                <span class="client-status">
+                    {{ appointment.get_status_display }}
+                </span>
+
+            </div>
+
+
+            <div class="client-info-row">
+
+                <span>
+                    Time
+                </span>
+
+                <strong>
+
+                    {{ appointment.start_time }}
+                    -
+                    {{ appointment.end_time }}
+
+                </strong>
+
+            </div>
+
+
+            <div class="client-info-row">
+
+                <span>
+                    Coach
+                </span>
+
+                <strong>
+                    {{ appointment.coach|default:"Not assigned" }}
+                </strong>
+
+            </div>
+
+
+            {% if appointment.notes %}
+
+                <div class="client-note">
+
+                    {{ appointment.notes }}
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    {% empty %}
+
+        <div class="client-card">
+
+            <p class="client-empty">
+                No bookings found.
+            </p>
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

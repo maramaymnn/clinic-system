@@ -1,0 +1,159 @@
+{% extends 'clinic_users/client_base.html' %}
+
+{% block title %}
+    Body Analysis
+{% endblock %}
+
+
+{% block content %}
+
+<div class="client-page-header">
+
+    <p class="client-eyebrow">
+        InBody
+    </p>
+
+    <h1>
+        My Body Analysis
+    </h1>
+
+    <p>
+        Your body-composition history and progress.
+    </p>
+
+</div>
+
+
+<div class="client-list">
+
+    {% for record in progress_records %}
+
+        <div class="client-card">
+
+            <div class="client-card-header">
+
+                <h2>
+                    {{ record.date }}
+                </h2>
+
+                <span class="client-status">
+                    InBody
+                </span>
+
+            </div>
+
+
+            <div class="client-stat-grid">
+
+
+                {% if record.weight %}
+
+                    <div class="client-stat">
+
+                        <span>
+                            Weight
+                        </span>
+
+                        <strong>
+                            {{ record.weight }}
+                        </strong>
+
+                        <small>
+                            kg
+                        </small>
+
+                    </div>
+
+                {% endif %}
+
+
+                {% if record.body_fat %}
+
+                    <div class="client-stat">
+
+                        <span>
+                            Body Fat
+                        </span>
+
+                        <strong>
+                            {{ record.body_fat }}
+                        </strong>
+
+                        <small>
+                            %
+                        </small>
+
+                    </div>
+
+                {% endif %}
+
+
+                {% if record.muscle_mass %}
+
+                    <div class="client-stat">
+
+                        <span>
+                            Muscle Mass
+                        </span>
+
+                        <strong>
+                            {{ record.muscle_mass }}
+                        </strong>
+
+                        <small>
+                            kg
+                        </small>
+
+                    </div>
+
+                {% endif %}
+
+
+                {% if record.water_percentage %}
+
+                    <div class="client-stat">
+
+                        <span>
+                            Water
+                        </span>
+
+                        <strong>
+                            {{ record.water_percentage }}
+                        </strong>
+
+                        <small>
+                            %
+                        </small>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            {% if record.notes %}
+
+                <div class="client-note">
+                    {{ record.notes }}
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    {% empty %}
+
+        <div class="client-card">
+
+            <p class="client-empty">
+                No body analysis records found.
+            </p>
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

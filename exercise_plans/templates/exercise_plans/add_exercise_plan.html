@@ -1,0 +1,48 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+<title>Add Workout Plan</title>
+
+<link
+    rel="stylesheet"
+    href="{% static 'dashboard/dashboard.css' %}"
+>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+{% include 'dashboard/includes/sidebar.html' %}
+
+<main class="main">
+
+    <h1>Add Workout Plan</h1>
+
+    <p>Client: <strong>{{ patient.name }}</strong></p>
+
+    <div class="card">
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Add Workout Plan</button>
+        </form>
+
+    </div>
+
+    <br>
+
+    <a href="/patients/{{ patient.id }}/" class="view-button">← Back to Client</a>
+
+</main>
+
+</div>
+
+</body>
+</html>

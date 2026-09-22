@@ -1,0 +1,539 @@
+{% extends 'clinic_users/client_base.html' %}
+
+{% block title %}
+    My Dashboard
+{% endblock %}
+
+
+{% block content %}
+
+<div class="client-page-header">
+
+    <p class="client-eyebrow">
+        Client Portal
+    </p>
+
+    {% if patient %}
+
+        <h1>
+            Welcome, {{ patient.name }}
+        </h1>
+
+        <p>
+            Your health journey, plans and appointments in one place.
+        </p>
+
+    {% else %}
+
+        <h1>
+            Welcome
+        </h1>
+
+        <p>
+            Your client profile is not linked yet.
+        </p>
+
+    {% endif %}
+
+</div>
+
+
+{% if patient %}
+
+<div class="client-dashboard-grid">
+
+
+    <!-- Membership -->
+
+    <section class="client-card">
+
+        <div class="client-card-header">
+
+            <span>
+                Membership
+            </span>
+
+            <a
+                href="{% url 'client_membership' %}"
+                class="client-small-link"
+            >
+                View
+            </a>
+
+        </div>
+
+
+        {% with subscription=subscriptions.0 %}
+
+            {% if subscription %}
+
+                <div class="client-highlight">
+
+                    <span class="client-label">
+                        Current Status
+                    </span>
+
+                    <strong>
+                        {{ subscription.get_status_display }}
+                    </strong>
+
+                </div>
+
+
+                <div class="client-info-row">
+
+                    <span>
+                        Start
+                    </span>
+
+                    <strong>
+                        {{ subscription.start_date }}
+                    </strong>
+
+                </div>
+
+
+                <div class="client-info-row">
+
+                    <span>
+                        End
+                    </span>
+
+                    <strong>
+                        {{ subscription.end_date }}
+                    </strong>
+
+                </div>
+
+            {% else %}
+
+                <p class="client-empty">
+                    No membership found.
+                </p>
+
+            {% endif %}
+
+        {% endwith %}
+
+    </section>
+
+
+    <!-- Body Analysis -->
+
+    <section class="client-card">
+
+        <div class="client-card-header">
+
+            <span>
+                Body Analysis
+            </span>
+
+            <a
+                href="{% url 'client_progress' %}"
+                class="client-small-link"
+            >
+                View
+            </a>
+
+        </div>
+
+
+        {% with record=progress_records.0 %}
+
+            {% if record %}
+
+                <p class="client-date">
+                    {{ record.date }}
+                </p>
+
+
+                <div class="client-stat-grid">
+
+                    {% if record.weight %}
+
+                        <div class="client-stat">
+
+                            <span>
+                                Weight
+                            </span>
+
+                            <strong>
+                                {{ record.weight }}
+                            </strong>
+
+                            <small>
+                                kg
+                            </small>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    {% if record.body_fat %}
+
+                        <div class="client-stat">
+
+                            <span>
+                                Body Fat
+                            </span>
+
+                            <strong>
+                                {{ record.body_fat }}
+                            </strong>
+
+                            <small>
+                                %
+                            </small>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    {% if record.muscle_mass %}
+
+                        <div class="client-stat">
+
+                            <span>
+                                Muscle
+                            </span>
+
+                            <strong>
+                                {{ record.muscle_mass }}
+                            </strong>
+
+                            <small>
+                                kg
+                            </small>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            {% else %}
+
+                <p class="client-empty">
+                    No body analysis yet.
+                </p>
+
+            {% endif %}
+
+        {% endwith %}
+
+    </section>
+
+
+    <!-- Nutrition -->
+
+    <section class="client-card client-card-wide">
+
+        <div class="client-card-header">
+
+            <span>
+                Nutrition Plan
+            </span>
+
+            <a
+                href="{% url 'client_nutrition' %}"
+                class="client-small-link"
+            >
+                View Plan
+            </a>
+
+        </div>
+
+
+        {% with plan=diet_plans.0 %}
+
+            {% if plan %}
+
+                <h2>
+                    {{ plan.title }}
+                </h2>
+
+                <p class="client-muted">
+                    Version {{ plan.version }}
+                </p>
+
+                <div class="client-info-row">
+
+                    <span>
+                        Period
+                    </span>
+
+                    <strong>
+                        {{ plan.start_date }}
+                        →
+                        {{ plan.end_date|default:"Ongoing" }}
+                    </strong>
+
+                </div>
+
+
+                {% if plan.calories %}
+
+                    <div class="client-info-row">
+
+                        <span>
+                            Calories
+                        </span>
+
+                        <strong>
+                            {{ plan.calories }} kcal
+                        </strong>
+
+                    </div>
+
+                {% endif %}
+
+
+                {% if plan.pdf_file %}
+
+                    <a
+                        href="{{ plan.pdf_file.url }}"
+                        target="_blank"
+                        class="client-button"
+                    >
+                        View Nutrition PDF
+                    </a>
+
+                {% endif %}
+
+            {% else %}
+
+                <p class="client-empty">
+                    No nutrition plan yet.
+                </p>
+
+            {% endif %}
+
+        {% endwith %}
+
+    </section>
+
+
+    <!-- Workout -->
+
+    <section class="client-card">
+
+        <div class="client-card-header">
+
+            <span>
+                Workout Plan
+            </span>
+
+            <a
+                href="{% url 'client_workout' %}"
+                class="client-small-link"
+            >
+                View
+            </a>
+
+        </div>
+
+
+        {% with plan=exercise_plans.0 %}
+
+            {% if plan %}
+
+                <h2>
+                    {{ plan.title }}
+                </h2>
+
+                <p class="client-muted">
+                    Version {{ plan.version }}
+                </p>
+
+                <p>
+                    {{ plan.get_plan_type_display }}
+                </p>
+
+                <p class="client-muted">
+
+                    {{ plan.start_date }}
+                    →
+                    {{ plan.end_date }}
+
+                </p>
+
+            {% else %}
+
+                <p class="client-empty">
+                    No workout plan yet.
+                </p>
+
+            {% endif %}
+
+        {% endwith %}
+
+    </section>
+
+
+    <!-- Check-in -->
+
+    <section class="client-card">
+
+        <div class="client-card-header">
+
+            <span>
+                Latest Check-in
+            </span>
+
+            <a
+                href="{% url 'client_checkins' %}"
+                class="client-small-link"
+            >
+                View
+            </a>
+
+        </div>
+
+
+        {% with checkin=follow_ups.0 %}
+
+            {% if checkin %}
+
+                <p class="client-date">
+                    {{ checkin.date }}
+                </p>
+
+                <div class="client-status">
+                    {{ checkin.get_status_display }}
+                </div>
+
+
+                {% if checkin.meals %}
+
+                    <p>
+                        {{ checkin.meals }}
+                    </p>
+
+                {% endif %}
+
+            {% else %}
+
+                <p class="client-empty">
+                    No check-ins yet.
+                </p>
+
+            {% endif %}
+
+        {% endwith %}
+
+    </section>
+
+
+    <!-- Booking -->
+
+    <section class="client-card">
+
+        <div class="client-card-header">
+
+            <span>
+                Latest Booking
+            </span>
+
+            <a
+                href="{% url 'client_bookings' %}"
+                class="client-small-link"
+            >
+                View
+            </a>
+
+        </div>
+
+
+        {% with appointment=appointments.0 %}
+
+            {% if appointment %}
+
+                <p class="client-date">
+                    {{ appointment.date }}
+                </p>
+
+                <h2>
+
+                    {{ appointment.start_time }}
+                    -
+                    {{ appointment.end_time }}
+
+                </h2>
+
+                <p>
+                    Coach:
+                    {{ appointment.coach|default:"Not assigned" }}
+                </p>
+
+                <div class="client-status">
+                    {{ appointment.get_status_display }}
+                </div>
+
+            {% else %}
+
+                <p class="client-empty">
+                    No bookings yet.
+                </p>
+
+            {% endif %}
+
+        {% endwith %}
+
+    </section>
+
+
+    <!-- Notifications -->
+
+    <section class="client-card client-card-wide">
+
+        <div class="client-card-header">
+
+            <span>
+                Notifications
+            </span>
+
+            <a
+                href="{% url 'notifications' %}"
+                class="client-small-link"
+            >
+                View All
+            </a>
+
+        </div>
+
+
+        {% for notification in notifications|slice:":3" %}
+
+            <div class="client-notification">
+
+                <strong>
+                    {{ notification.title }}
+                </strong>
+
+                <p>
+                    {{ notification.message }}
+                </p>
+
+                <small>
+                    {{ notification.created_at }}
+                </small>
+
+            </div>
+
+        {% empty %}
+
+            <p class="client-empty">
+                No new notifications.
+            </p>
+
+        {% endfor %}
+
+    </section>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

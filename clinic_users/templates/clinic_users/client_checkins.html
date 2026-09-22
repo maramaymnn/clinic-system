@@ -1,0 +1,112 @@
+{% extends 'clinic_users/client_base.html' %}
+
+{% block title %}
+    Daily Check-ins
+{% endblock %}
+
+
+{% block content %}
+
+<div class="client-page-header">
+
+    <p class="client-eyebrow">
+        Follow-up
+    </p>
+
+    <h1>
+        My Daily Check-ins
+    </h1>
+
+    <p>
+        Your daily food follow-up history.
+    </p>
+
+</div>
+
+
+<div class="client-list">
+
+    {% for follow_up in follow_ups %}
+
+        <div class="client-card">
+
+            <div class="client-card-header">
+
+                <h2>
+                    {{ follow_up.date }}
+                </h2>
+
+                <span class="client-status">
+                    {{ follow_up.get_status_display }}
+                </span>
+
+            </div>
+
+
+            {% if follow_up.meals %}
+
+                <div class="client-section">
+
+                    <span class="client-label">
+                        Meals
+                    </span>
+
+                    <p>
+                        {{ follow_up.meals }}
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+
+            {% if follow_up.replacement_request %}
+
+                <div class="client-section">
+
+                    <span class="client-label">
+                        Replacement
+                    </span>
+
+                    <p>
+                        {{ follow_up.replacement_request }}
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+
+            {% if follow_up.notes %}
+
+                <div class="client-section">
+
+                    <span class="client-label">
+                        Notes
+                    </span>
+
+                    <p>
+                        {{ follow_up.notes }}
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    {% empty %}
+
+        <div class="client-card">
+
+            <p class="client-empty">
+                No check-ins found.
+            </p>
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

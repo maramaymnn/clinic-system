@@ -1,0 +1,119 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Bookings</title>
+
+
+<link
+    rel="stylesheet"
+    href="{% static 'dashboard/dashboard.css' %}"
+>
+
+
+</head>
+
+<body>
+
+<div class="layout">
+{% include 'dashboard/includes/sidebar.html' %}
+
+<main class="main">
+
+    <div class="page-header">
+        <div>
+            <span class="eyebrow">CLINIC SCHEDULE</span>
+            <h1>Bookings</h1>
+            <p>Manage and review client bookings.</p>
+        </div>
+    </div>
+
+    {% if appointments %}
+
+        {% for appointment in appointments %}
+
+            <div class="card">
+
+                <h2>
+                    {{ appointment.patient.name }}
+                </h2>
+
+                <p>
+                    <strong>Date:</strong>
+                    {{ appointment.date }}
+                </p>
+
+                <p>
+                    <strong>Time:</strong>
+                    {{ appointment.start_time }}
+                    -
+                    {{ appointment.end_time }}
+                </p>
+
+                <p>
+                    <strong>Coach:</strong>
+                    {{ appointment.coach|default:"Not assigned" }}
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    {{ appointment.get_status_display }}
+                </p>
+
+                <p>
+                    <strong>Notes:</strong>
+                    {{ appointment.notes|default:"No notes" }}
+                </p>
+
+                {% if request.user.role == 'admin' or request.user.role == 'receptionist' %}
+
+                    {% if appointment.status == 'awaiting_confirmation' %}
+
+                        <form
+                            method="post"
+                            action="{% url 'update_appointment_status' appointment.id %}"
+                        >
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                name="status"
+                                value="confirmed"
+                            >
+                                Confirm
+                            </button>
+
+                            <button
+                                type="submit"
+                                name="status"
+                                value="cancelled"
+                            >
+                                Cancel
+                            </button>
+
+                        </form>
+
+                    {% endif %}
+
+                {% endif %}
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="card">
+            <p>No bookings yet.</p>
+        </div>
+
+    {% endif %}
+
+</main>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,353 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+<title>Client Details</title>
+
+<link
+    rel="stylesheet"
+    href="{% static 'dashboard/dashboard.css' %}"
+>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+{% include 'dashboard/includes/sidebar.html' %}
+
+<main class="main">
+
+
+<h1>{{ patient.name }}</h1>
+{% if request.user.role == 'admin' or request.user.role == 'receptionist' %}
+    {% if not patient.user %}
+        <a
+            href="{% url 'create_client_account' patient.id %}"
+            class="add-button"
+        >
+            + Create Client Account
+        </a>
+    {% else %}
+        <p>
+            <strong>Client Account:</strong>
+            Created
+        </p>
+    {% endif %}
+{% endif %}
+
+<!-- Client Information -->
+
+<div class="card">
+
+    <h2>Client Information</h2>
+
+    <p><strong>Phone:</strong> {{ patient.phone }}</p>
+    <p><strong>Email:</strong> {{ patient.email|default:"Not provided" }}</p>
+    <p><strong>Gender:</strong> {{ patient.get_gender_display }}</p>
+    <p><strong>Date of Birth:</strong> {{ patient.date_of_birth|default:"Not provided" }}</p>
+
+    <p>
+        <strong>Online Client:</strong>
+        {% if patient.is_online %}Yes{% else %}No{% endif %}
+    </p>
+
+    <p><strong>Status:</strong> {{ patient.get_status_display }}</p>
+    <p><strong>Notes:</strong> {{ patient.notes|default:"No notes" }}</p>
+
+    {% if patient.assessment %}
+
+        <hr>
+
+        <h2>Client Intake</h2>
+
+        <p><strong>Goal:</strong> {{ patient.assessment.get_goal_display }}</p>
+        <p><strong>Eating Habits:</strong> {{ patient.assessment.eating_habits|default:"—" }}</p>
+        <p><strong>Sleep:</strong> {{ patient.assessment.sleep|default:"—" }}</p>
+        <p><strong>Activity Level:</strong> {{ patient.assessment.activity_level|default:"—" }}</p>
+        <p><strong>Previous Diets:</strong> {{ patient.assessment.previous_diets|default:"—" }}</p>
+        <p><strong>Challenges:</strong> {{ patient.assessment.challenges|default:"—" }}</p>
+
+        <a href="/patients/{{ patient.id }}/assessments/add/" class="view-button">
+            Edit Intake
+        </a>
+
+    {% else %}
+
+        {% if request.user.role == 'admin' or request.user.role == 'receptionist' %}
+
+            <a href="/patients/{{ patient.id }}/assessments/add/" class="add-button">
+                + Add Client Intake
+            </a>
+
+        {% endif %}
+
+    {% endif %}
+
+</div>
+
+
+<!-- Memberships -->
+
+<div class="card">
+
+    <h2>Memberships</h2>
+
+    {% if request.user.role == 'admin' or request.user.role == 'receptionist' %}
+
+        <a href="/patients/{{ patient.id }}/subscriptions/add/" class="add-button">
+            + Add Membership
+        </a>
+
+    {% endif %}
+
+    {% for subscription in subscriptions %}
+
+        <div class="patient-row">
+            <span><strong>Start:</strong> {{ subscription.start_date }}</span>
+            <span><strong>End:</strong> {{ subscription.end_date }}</span>
+            <span><strong>Status:</strong> {{ subscription.get_status_display }}</span>
+        </div>
+
+    {% empty %}
+
+        <p>No memberships found.</p>
+
+    {% endfor %}
+
+</div>
+
+
+<!-- Body Analysis (baseline + history) -->
+
+<div class="card">
+
+    <h2>Body Analysis</h2>
+
+    {% if request.user.role == 'admin' or request.user.role == 'diet_doctor' %}
+
+        <a href="/patients/{{ patient.id }}/progress/add/" class="add-button">
+            + Add Body Analysis
+        </a>
+
+    {% endif %}
+
+    {% for record in progress_records %}
+
+        <div class="patient-row">
+            <span><strong>Date:</strong> {{ record.date }}</span>
+            <span><strong>Weight:</strong> {{ record.weight|default:"—" }}</span>
+            <span><strong>Body Fat:</strong> {{ record.body_fat|default:"—" }}</span>
+            <span><strong>Muscle Mass:</strong> {{ record.muscle_mass|default:"—" }}</span>
+        </div>
+
+    {% empty %}
+
+        <p>No body analysis records yet.</p>
+
+    {% endfor %}
+
+</div>
+
+
+<!-- Nutrition Plans -->
+
+<div class="card">
+
+    <h2>Nutrition Plans</h2>
+
+    {% if request.user.role == 'admin' or request.user.role == 'diet_doctor' %}
+
+        <a href="/patients/{{ patient.id }}/diet-plans/add/" class="add-button">
+            + Add Nutrition Plan
+        </a>
+
+    {% endif %}
+
+    {% for plan in diet_plans %}
+
+        <div class="patient-row">
+
+            <span><strong>{{ plan.title }}</strong></span>
+            <span>{{ plan.start_date }} → {{ plan.end_date }}</span>
+
+            {% if plan.calories %}
+                <span>{{ plan.calories }} kcal</span>
+            {% endif %}
+
+            {% if plan.pdf_file %}
+                <a href="{{ plan.pdf_file.url }}" target="_blank" class="view-button">View PDF</a>
+            {% endif %}
+
+        </div>
+
+        {% if plan.images.all %}
+
+            <div class="patient-row" style="flex-wrap: wrap; gap: 10px;">
+
+                {% for image in plan.images.all %}
+
+                    <a href="{{ image.image.url }}" target="_blank" title="{{ image.caption }}">
+                        <img
+                            src="{{ image.image.url }}"
+                            alt="{{ image.caption|default:'Meal photo' }}"
+                            style="width:90px; height:90px; object-fit:cover; border-radius:14px; border:1px solid var(--line);"
+                        >
+                    </a>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    {% empty %}
+
+        <p>No nutrition plans found.</p>
+
+    {% endfor %}
+
+</div>
+
+
+<!-- Workout Plans -->
+
+<div class="card">
+
+    <h2>Workout Plans</h2>
+
+    {% if request.user.role == 'admin' or request.user.role == 'exercise_coach' %}
+
+        <a href="/patients/{{ patient.id }}/exercise-plans/add/" class="add-button">
+            + Add Workout Plan
+        </a>
+
+    {% endif %}
+
+    {% for plan in exercise_plans %}
+
+        <div class="patient-row">
+            <span><strong>{{ plan.title }}</strong></span>
+            <span>{{ plan.get_plan_type_display }}</span>
+            <span>{{ plan.start_date }} → {{ plan.end_date }}</span>
+
+            {% if plan.pdf_file %}
+                <a href="{{ plan.pdf_file.url }}" target="_blank" class="view-button">View PDF</a>
+            {% endif %}
+        </div>
+
+    {% empty %}
+
+        <p>No workout plans found.</p>
+
+    {% endfor %}
+
+</div>
+
+
+<!-- Daily Check-ins -->
+
+<div class="card">
+
+    <h2>Daily Check-ins</h2>
+
+    {% if request.user.role == 'admin' or request.user.role == 'follow_up' %}
+
+        <a href="/patients/{{ patient.id }}/follow-ups/add/" class="add-button">
+            + Add Check-in
+        </a>
+
+    {% endif %}
+
+    {% for follow_up in follow_ups %}
+
+        <div class="patient-row">
+            <span><strong>{{ follow_up.date }}</strong></span>
+            <span>{{ follow_up.get_status_display }}</span>
+            <span>{{ follow_up.meals|default:"—"|truncatechars:40 }}</span>
+        </div>
+
+    {% empty %}
+
+        <p>No check-ins found.</p>
+
+    {% endfor %}
+
+</div>
+
+
+<!-- Bookings -->
+
+<div class="card">
+
+    <h2>Bookings</h2>
+
+    {% if request.user.role == 'admin' or request.user.role == 'receptionist' or request.user.role == 'exercise_coach' %}
+
+        <a href="/patients/{{ patient.id }}/appointments/add/" class="add-button">
+            + Add Booking
+        </a>
+
+    {% endif %}
+
+    {% if appointments %}
+
+        {% for appointment in appointments %}
+
+            <hr>
+
+            <p><strong>Date:</strong> {{ appointment.date }}</p>
+            <p><strong>Time:</strong> {{ appointment.start_time }} - {{ appointment.end_time }}</p>
+            <p><strong>Coach:</strong> {{ appointment.coach|default:"Not assigned" }}</p>
+            <p><strong>Status:</strong> {{ appointment.get_status_display }}</p>
+            <p><strong>Notes:</strong> {{ appointment.notes|default:"No notes" }}</p>
+
+            {% if request.user.role == 'admin' or request.user.role == 'receptionist' %}
+
+                {% if appointment.status == 'awaiting_confirmation' %}
+
+                    <form
+                        method="post"
+                        action="{% url 'update_appointment_status' appointment.id %}"
+                        style="display:inline;"
+                    >
+                        {% csrf_token %}
+
+                        <button type="submit" name="status" value="confirmed" class="add-button">
+                            Confirm
+                        </button>
+
+                        <button type="submit" name="status" value="cancelled" class="view-button">
+                            Cancel
+                        </button>
+                    </form>
+
+                {% endif %}
+
+            {% endif %}
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No bookings yet.</p>
+
+    {% endif %}
+
+</div>
+
+<br>
+
+<a href="/patients/" class="view-button">← Back to Clients</a>
+
+</main>
+
+</div>
+
+</body>
+
+</html>

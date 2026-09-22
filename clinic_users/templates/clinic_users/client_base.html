@@ -1,0 +1,124 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% block title %}My Clinic{% endblock %}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'clinic_users/client.css' %}"
+    >
+
+</head>
+
+<body>
+
+<div class="client-layout">
+
+    <aside class="client-sidebar">
+
+        <div class="client-logo">
+            My Clinic
+        </div>
+
+        <nav class="client-nav">
+
+            <a
+                href="{% url 'client_dashboard' %}"
+                class="client-nav-item"
+            >
+                Home
+            </a>
+
+            <a
+                href="{% url 'client_profile' %}"
+                class="client-nav-item"
+            >
+                My Profile
+            </a>
+
+            <a
+                href="{% url 'client_membership' %}"
+                class="client-nav-item"
+            >
+                My Membership
+            </a>
+
+            <a
+                href="{% url 'client_nutrition' %}"
+                class="client-nav-item"
+            >
+                Nutrition Plan
+            </a>
+
+            <a
+                href="{% url 'client_workout' %}"
+                class="client-nav-item"
+            >
+                Workout Plan
+            </a>
+
+            <a
+                href="{% url 'client_progress' %}"
+                class="client-nav-item"
+            >
+                Body Analysis
+            </a>
+
+            <a
+                href="{% url 'client_checkins' %}"
+                class="client-nav-item"
+            >
+                Daily Check-ins
+            </a>
+
+            <a
+                href="{% url 'client_bookings' %}"
+                class="client-nav-item"
+            >
+                My Bookings
+            </a>
+
+            <a
+                href="{% url 'notifications' %}"
+                class="client-nav-item"
+            >
+                Notifications
+            </a>
+
+            <a
+                href="{% url 'logout' %}"
+                class="client-nav-item client-logout"
+            >
+                Logout
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <main class="client-main">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

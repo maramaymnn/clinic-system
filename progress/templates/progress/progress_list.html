@@ -1,0 +1,59 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+<title>Body Analysis</title>
+
+<link
+    rel="stylesheet"
+    href="{% static 'dashboard/dashboard.css' %}"
+>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+{% include 'dashboard/includes/sidebar.html' %}
+
+<main class="main">
+
+    <h1>Body Analysis</h1>
+
+    {% if progress_records %}
+
+        {% for progress in progress_records %}
+
+            <div class="card">
+
+                <h2>{{ progress.patient.name }}</h2>
+
+                <p><strong>Date:</strong> {{ progress.date }}</p>
+                <p><strong>Weight:</strong> {{ progress.weight|default:"Not provided" }}</p>
+                <p><strong>Body Fat:</strong> {{ progress.body_fat|default:"Not provided" }}</p>
+                <p><strong>Muscle Mass:</strong> {{ progress.muscle_mass|default:"Not provided" }}</p>
+                <p><strong>Water:</strong> {{ progress.water_percentage|default:"Not provided" }}</p>
+                <p><strong>Notes:</strong> {{ progress.notes|default:"No notes" }}</p>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="card">
+            <p>No body analysis records yet.</p>
+        </div>
+
+    {% endif %}
+
+</main>
+
+</div>
+
+</body>
+</html>
