@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-o0*j217a2%9^=0e5@0v0mqwo9barzo060(riq@3=828^!ulgo$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["clinic-system-git-main-maram16.vercel.app"]
 
 
 # Application definition
